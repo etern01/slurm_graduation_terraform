@@ -22,5 +22,5 @@ terraform {
 
 provider "yandex" {
   cloud_id = "b1g8np9vscpqf0c15ej1"
-  folder_id = "b1gf1q7f6pmbfnld7jtu" 
+  folder_id = "b1gsaq4k3di2ruop4vll" 
 }
