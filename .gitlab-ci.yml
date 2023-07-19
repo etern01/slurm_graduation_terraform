@@ -17,7 +17,7 @@ cache:
 
 before_script:
   - |
-    cat <<EOF>> ~/terraformrc.
+    cat <<EOF>> ~/.terraformrc
     provider_installation {
       network_mirror {
         url = "https://terraform-mirror.yandexcloud.net/"
