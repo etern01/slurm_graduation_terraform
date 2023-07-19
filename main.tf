@@ -19,9 +19,15 @@ module "kube" {
   node_groups = {
     "yc-k8s-ng-01" = {
       description  = "Kubernetes nodes group 01"
+      node_cores    = 1
+      node_memory   = 2
       fixed_scale   = {
         size = 3
       }
+      master_locations = [for subnet in yandex_vpc_subnet.this : {
+        subnet_id = subnet.id
+        zone      = subnet.zone
+      }]
       node_labels   = {
         role        = "worker-01"
         environment = "testing"

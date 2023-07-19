@@ -1,4 +1,4 @@
 locals {
-  prefix = "slurm-"
+  prefix = "k8s-"
   
 }
