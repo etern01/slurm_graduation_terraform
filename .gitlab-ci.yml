@@ -31,6 +31,7 @@ before_script:
   - terraform --version
   - terraform init
   - echo YC_KEY > /tmp/sa-key.json
+  - echo /tmp/sa-key.json
 
 stages:
   - validate
