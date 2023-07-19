@@ -19,3 +19,9 @@ variable "az" {
   default = ["ru-central1-a", "ru-central1-b", "ru-central1-c"]
 
 }
+
+variable "ipv4_cidr_blocks" {
+  type        = list(list(string))
+  description = "List of ipv4"
+
+}
