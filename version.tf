@@ -21,6 +21,7 @@ terraform {
 }
 
 provider "yandex" {
+  service_account_key_file = file("/tmp/sa-key.json")
   cloud_id = "b1g8np9vscpqf0c15ej1"
   folder_id = "b1gsaq4k3di2ruop4vll" 
 }
