@@ -1,5 +1,5 @@
 module "kube" {
-  source     = "./modules/terraform-yc-kubernetes"
+  source     = "./modules/kubernetes"
   network_id = yandex_vpc_network.this.id
 
   master_locations = [for subnet in yandex_vpc_subnet.this : {
