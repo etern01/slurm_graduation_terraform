@@ -12,6 +12,7 @@ variables:
   YC_SERVICE_ACCOUNT_KEY_FILE: /tmp/sa-key.json
 
 cache:
+  key: "$CI_COMMIT_SHA"
   paths:
     - .terraform
 
@@ -55,8 +56,7 @@ checkov:
       - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   
   script:
-    - script -q -c 'checkov -d . ; echo $? > CKVEXIT'
-    - exit $(cat CKVEXIT)
+    - checkov -d .
   allow_failure: true
 
 # Job: tflint | Stage: Validate
