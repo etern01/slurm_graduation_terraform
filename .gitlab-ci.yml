@@ -53,7 +53,8 @@ checkov:
       - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   
   script:
-    - checkov -d .
+    - script -q -c 'checkov -d . ; echo $? > CKVEXIT'
+    - exit $(cat CKVEXIT)
   allow_failure: true
 
 # Job: tflint | Stage: Validate
