@@ -12,7 +12,6 @@ variables:
   YC_SERVICE_ACCOUNT_KEY_FILE: /tmp/sa-key.json
 
 cache:
-  key: "$CI_COMMIT_SHA"
   paths:
     - .terraform
 
