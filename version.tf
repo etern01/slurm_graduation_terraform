@@ -34,7 +34,8 @@ provider "helm" {
     cluster_ca_certificate = module.kube.cluster_ca_certificate
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
-      command = "${path.root}/yc-cli/bin/yc"
+      #command = "/yc-cli/bin/yc"
+      command = "yc"
       args = [
         "managed-kubernetes",
         "create-token",
