@@ -34,6 +34,23 @@ module "kube" {
         environment = "testing"
       }
     },
+    "yc-k8s-ingress" = {
+      description  = "Kubernetes nodes ingress"
+      node_cores    = 2
+      node_memory   = 2
+      core_fraction = 50
+      fixed_scale   = {
+        size = 1
+      }
+      master_locations = [for subnet in yandex_vpc_subnet.this : {
+        subnet_id = subnet.id
+        zone      = subnet.zone
+      }]
+      node_labels   = {
+        role        = "ingress"
+        environment = "testing"
+      }
+    }
     
   }
 }

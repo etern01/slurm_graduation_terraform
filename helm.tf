@@ -15,11 +15,8 @@ resource "helm_release" "ingress_nginx" {
   chart      = "ingress-nginx"
   version    = "4.2.1"
   wait       = true
-  depends_on = [
-    yandex_kubernetes_node_group.k8s_node_group
-  ]
   set {
     name  = "controller.service.loadBalancerIP"
-    value = yandex_vpc_address.addr.external_ipv4_address[0].address
+    value = module.kube.external_v4_address
   }
 }
