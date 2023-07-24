@@ -32,7 +32,7 @@ provider "helm" {
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
       args        = ["k8s", "create-token"]
-      command     = "yc"
+      command     = "/yc-cli/bin/yc"
     }
   }
 }
