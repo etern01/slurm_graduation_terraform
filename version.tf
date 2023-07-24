@@ -38,9 +38,9 @@ provider "helm" {
       args = [
         "managed-kubernetes",
         "create-token",
-        "--cloud-id", var.yandex_cloud_id,
-        "--folder-id", var.yandex_folder_id,
-        "--token", var.yandex_token,
+        "--cloud-id", var.cloud_id,
+        "--folder-id", var.folder_id,
+        #"--token", var.yandex_token,
       ]
     }
   }
