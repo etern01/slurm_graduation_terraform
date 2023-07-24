@@ -18,4 +18,14 @@ output "internal_cluster_cmd_str" {
   value       = try(module.kube.internal_cluster_cmd, null)
 }
 
-  
+
+output "cluster_ca_certificate" {
+  description = "Kubernetes cluster certificate."
+  value       = try(module.kube.cluster_ca_certificate, null)
+}
+
+
+output "external_v4_address" {
+  description = "Kubernetes cluster certificate."
+  value       = try(module.kube.external_v4_address, null)
+}
