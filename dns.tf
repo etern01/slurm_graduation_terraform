@@ -5,7 +5,7 @@ resource "yandex_dns_zone" "this" {
 }
 
 resource "yandex_dns_recordset" "this" {
-  zone_id = yandex_dns_zone.dns_domain.id
+  zone_id = yandex_dns_zone.this.id
   name    = join("", [var.dns_domain, "."])
   type    = "A"
   ttl     = 200
