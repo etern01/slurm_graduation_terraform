@@ -28,10 +28,10 @@ provider "yandex" {
 
 provider "helm" {
   kubernetes {
-    load_config_file = false
+    #load_config_file = false
 
     host = module.kube.external_v4_endpoint
-    cluster_ca_certificate = module.kube.ca_certificate
+    cluster_ca_certificate = module.kube.cluster_ca_certificate
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
       command = "${path.root}/yc-cli/bin/yc"
