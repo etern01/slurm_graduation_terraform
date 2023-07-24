@@ -31,6 +31,7 @@ cache:
     EOF
   - terraform --version
   - terraform init
+  - echo $YC_KEY > /tmp/sa-key.json
   - apk add curl bash
   - curl -o- https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash -s -- -i ./yc-cli -n
 
