@@ -3,7 +3,7 @@ default:
     - docker
 
 image:
-  name: registry.gitlab.com/gitlab-org/gitlab-build-images:terraform
+  name: hashicorp/terraform:1.5.3
   entrypoint:
     - '/usr/bin/env'
     - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
