@@ -25,14 +25,23 @@ provider "yandex" {
   cloud_id = "b1g8np9vscpqf0c15ej1"
   folder_id = "b1gsaq4k3di2ruop4vll" 
 }
+
 provider "helm" {
   kubernetes {
-    host                   = module.kube.external_v4_address
-    cluster_ca_certificate = module.kube.cluster_ca_certificate
+    load_config_file = false
+
+    host = module.kube.external_v4_endpoint
+    cluster_ca_certificate = module.kube.ca_certificate
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
-      args        = ["k8s", "create-token"]
-      command     = "/yc-cli/bin/yc"
+      command = "${path.root}/yc-cli/bin/yc"
+      args = [
+        "managed-kubernetes",
+        "create-token",
+        "--cloud-id", var.yandex_cloud_id,
+        "--folder-id", var.yandex_folder_id,
+        "--token", var.yandex_token,
+      ]
     }
   }
 }
