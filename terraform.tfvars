@@ -22,3 +22,5 @@ master_labels = {
   role        = "master"
   service     = "kubernetes"
 }
+
+dns_domain = "s015605.site"

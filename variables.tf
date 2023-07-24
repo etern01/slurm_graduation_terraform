@@ -25,3 +25,11 @@ variable "ipv4_cidr_blocks" {
   description = "List of ipv4"
 
 }
+
+
+
+variable "dns_domain" {
+  type        = string
+  description = "Domain name"
+
+}

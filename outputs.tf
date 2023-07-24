@@ -17,3 +17,5 @@ output "internal_cluster_cmd_str" {
   description = "Connection string to internal Kubernetes cluster."
   value       = try(module.kube.internal_cluster_cmd, null)
 }
+
+  
