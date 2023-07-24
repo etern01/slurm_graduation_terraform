@@ -41,7 +41,7 @@ provider "helm" {
         "create-token",
         "--cloud-id", var.cloud_id,
         "--folder-id", var.folder_id,
-        #"--token", var.yandex_token,
+        "--token $YC_TOKEN"
       ]
     }
   }
