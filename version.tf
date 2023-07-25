@@ -28,19 +28,8 @@ provider "yandex" {
 
 provider "helm" {
   kubernetes {
-    #load_config_file = false
+    #
+    config_path = "${local.kubeconfig}"
 
-    host = module.kube.external_v4_endpoint
-    cluster_ca_certificate = module.kube.cluster_ca_certificate
-    exec {
-      api_version = "client.authentication.k8s.io/v1beta1"
-      command = "${path.root}/yc-cli/bin/yc"
-      args = [
-        "managed-kubernetes",
-        "create-token",
-        "--cloud-id", var.cloud_id,
-        "--folder-id", var.folder_id,
-      ]
-    }
   }
 }
