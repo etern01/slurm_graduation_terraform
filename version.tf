@@ -21,7 +21,7 @@ terraform {
 }
 
 provider "yandex" {
-  #service_account_key_file = file("/tmp/sa-key.json")
+  service_account_key_file = file("/tmp/sa-key.json")
   cloud_id = "b1g8np9vscpqf0c15ej1"
   folder_id = "b1gsaq4k3di2ruop4vll" 
 }
@@ -40,7 +40,6 @@ provider "helm" {
         "create-token",
         "--cloud-id", var.cloud_id,
         "--folder-id", var.folder_id,
-        "--token $YC_TOKEN"
       ]
     }
   }
