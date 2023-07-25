@@ -29,14 +29,14 @@ provider "yandex" {
 data "yandex_client_config" "client" {}
 
 data "yandex_kubernetes_cluster" "kubernetes" {
-  name = "kubernetes"
+  name = module.kube.cluster_name
 }
 
 provider "kubernetes" {
   load_config_file = false
 
-  host                   = data.yandex_kubernetes_cluster.kubernetes.master.0.external_v4_endpoint
-  cluster_ca_certificate = data.yandex_kubernetes_cluster.kubernetes.master.0.cluster_ca_certificate
+  host                   = module.kube.external_v4_address
+  cluster_ca_certificate = module.kube.cluster_ca_certificate
   token                  = data.yandex_client_config.client.iam_token
 }
 
@@ -45,8 +45,8 @@ provider "helm" {
   kubernetes {
     #load_config_file = false
 
-    host                   = data.yandex_kubernetes_cluster.kubernetes.master.0.external_v4_endpoint
-    cluster_ca_certificate = data.yandex_kubernetes_cluster.kubernetes.master.0.cluster_ca_certificate
+    host                   = module.kube.external_v4_address
+    cluster_ca_certificate = module.kube.cluster_ca_certificate
     token                  = data.yandex_client_config.client.iam_token
   }
 }
