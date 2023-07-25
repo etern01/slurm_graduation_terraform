@@ -20,3 +20,16 @@ resource "helm_release" "ingress_nginx" {
     value = module.kube.external_v4_address
   }
 }
+
+resource "helm_release" "cert-manager" {
+  namespace        = "cert-manager"
+  create_namespace = true
+  name             = "jetstack"
+  repository       = "https://charts.jetstack.io"
+  chart            = "cert-manager"
+  wait             = true
+  set {
+    name  = "installCRDs"
+    value = true
+  }
+}
