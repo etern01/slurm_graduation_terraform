@@ -6,7 +6,7 @@ apiVersion: v1
 clusters:
 - cluster:
     server: ${module.kube.external_v4_endpoint}
-    certificate-authority-data: ${base64encode(ule.kube.cluster_ca_certificate)}
+    certificate-authority-data: ${base64encode(module.kube.cluster_ca_certificate)}
   name: kubernetes
 contexts:
 - context:
