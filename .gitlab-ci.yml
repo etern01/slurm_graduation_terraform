@@ -8,8 +8,8 @@ image:
     - '/usr/bin/env'
     - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 
-#variables:
-#  YC_SERVICE_ACCOUNT_KEY_FILE: /tmp/sa-key.json
+variables:
+  YC_SERVICE_ACCOUNT_KEY_FILE: /tmp/sa-key.json
 
 cache:
   key: "$CI_COMMIT_SHA"
@@ -31,7 +31,7 @@ cache:
     EOF
   - terraform --version
   - terraform init
-  #- echo $YC_KEY > /tmp/sa-key.json
+  - echo $YC_KEY > /tmp/sa-key.json
   - apk add curl bash
   - curl -o- https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash -s -- -i ./yc-cli -n
 
