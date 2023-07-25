@@ -29,3 +29,7 @@ output "external_v4_address" {
   description = "Kubernetes cluster certificate."
   value       = try(module.kube.external_v4_address, null)
 }
+
+output "kubeconfig" {
+  value = local.kubeconfig
+}

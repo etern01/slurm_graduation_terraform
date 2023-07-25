@@ -26,10 +26,27 @@ provider "yandex" {
   folder_id = "b1gsaq4k3di2ruop4vll" 
 }
 
+data "yandex_client_config" "client" {}
+
+data "yandex_kubernetes_cluster" "kubernetes" {
+  name = "kubernetes"
+}
+
+provider "kubernetes" {
+  load_config_file = false
+
+  host                   = data.yandex_kubernetes_cluster.kubernetes.master.0.external_v4_endpoint
+  cluster_ca_certificate = data.yandex_kubernetes_cluster.kubernetes.master.0.cluster_ca_certificate
+  token                  = data.yandex_client_config.client.iam_token
+}
+
+
 provider "helm" {
   kubernetes {
-    #
-    config_path = "${local.kubeconfig}"
+    #load_config_file = false
 
+    host                   = data.yandex_kubernetes_cluster.kubernetes.master.0.external_v4_endpoint
+    cluster_ca_certificate = data.yandex_kubernetes_cluster.kubernetes.master.0.cluster_ca_certificate
+    token                  = data.yandex_client_config.client.iam_token
   }
 }
