@@ -52,6 +52,7 @@ module "kube" {
       node_labels   = {
         role        = "ingress"
         environment = "testing"
+        nginx-ingress = true
       }
       nat = true
     }

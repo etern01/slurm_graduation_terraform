@@ -11,14 +11,17 @@ resource "yandex_resourcemanager_folder_iam_member" "sa-k8s-admin-permissions" {
 
 resource "helm_release" "ingress_nginx" {
   name       = "ingress-nginx"
+  namespace        = "ingress-nginx"
+  create_namespace = true
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx"
   version    = "4.7.1" 
   wait       = true
-  #set {
-  #  name  = "controller.service.loadBalancerIP"
-  #  value = module.kube.external_v4_address
-  #}
+  set {
+    name  = "controller.nodeSelector"
+    value = "nginx-ingress: true"
+
+  }
   depends_on = [ yandex_resourcemanager_folder_iam_member.sa-k8s-admin-permissions ]
 }
 
