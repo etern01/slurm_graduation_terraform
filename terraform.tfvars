@@ -24,3 +24,4 @@ master_labels = {
 }
 
 dns_domain = "s015605.site"
+

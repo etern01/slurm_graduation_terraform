@@ -33,7 +33,6 @@ data "yandex_kubernetes_cluster" "kubernetes" {
 }
 
 provider "kubernetes" {
-  load_config_file = false
 
   host                   = module.kube.external_v4_address
   cluster_ca_certificate = module.kube.cluster_ca_certificate

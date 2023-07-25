@@ -1,3 +1,9 @@
+data "kubernetes_service" "this" {
+  metadata {
+    name = "ingress-nginx-controller"
+  }
+}
+
 resource "yandex_dns_zone" "this" {
   name   = replace(var.dns_domain, ".", "-")
   zone   = join("", [var.dns_domain, "."])
@@ -9,5 +15,5 @@ resource "yandex_dns_recordset" "this" {
   name    = join("", [var.dns_domain, "."])
   type    = "A"
   ttl     = 200
-  data    = [module.kube.external_v4_address]
+  data    = [data.kubernetes_service.this.status[0].load_balancer[0].ingress[0].ip]
 }

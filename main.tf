@@ -1,6 +1,8 @@
 module "kube" {
   source     = "./modules/kubernetes"
   network_id = yandex_vpc_network.this.id
+  public_access = true
+  enable_default_rules = false
 
   master_locations = [for subnet in yandex_vpc_subnet.this : {
     subnet_id = subnet.id
@@ -33,6 +35,7 @@ module "kube" {
         role        = "worker-01"
         environment = "testing"
       }
+      nat = true
     },
     "yc-k8s-ingress" = {
       description  = "Kubernetes nodes ingress"
@@ -50,6 +53,7 @@ module "kube" {
         role        = "ingress"
         environment = "testing"
       }
+      nat = true
     }
     
   }
