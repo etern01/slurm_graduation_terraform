@@ -1,0 +1,127 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "gitlab-agent.fullname" . }}
+  labels:
+    {{- include "gitlab-agent.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicas }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      {{- include "gitlab-agent.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "gitlab-agent.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{-   toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "gitlab-agent.serviceAccountName" . }}
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName | quote }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - --token-file=/etc/agentk/secrets/token
+            - --kas-address={{ include "gitlab-agent.kasAddress" . }}
+            {{- if .Values.config.caCert }}
+            - --ca-cert-file=/etc/agentk/config/ca.crt
+            {{- end }}
+            {{- if ((.Values.config.observability).tls).enabled }}
+            - --observability-cert-file=/etc/agentk/observability-secrets/tls.crt
+            - --observability-key-file=/etc/agentk/observability-secrets/tls.key
+            {{- end }}
+            {{- if .Values.config.kasHeaders }}
+            {{- range .Values.config.kasHeaders }}
+            - --kas-header
+            - {{ . | quote }}
+            {{- end }}
+            {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+               fieldRef:
+                 fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: SERVICE_ACCOUNT_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.serviceAccountName
+          {{- if .Values.extraEnv }}
+            {{- toYaml .Values.extraEnv | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+             - name: secret-volume
+               mountPath: /etc/agentk/secrets
+            {{- if ((.Values.config.observability).tls).enabled }}
+             - name: observability-secret-volume
+               mountPath: /etc/agentk/observability-secrets
+            {{- end }}
+             - name: config-volume
+               mountPath: /etc/agentk/config
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: {{ include "gitlab-agent.secretName" . }}
+        {{- if ((.Values.config.observability).tls).enabled }}
+        - name: observability-secret-volume
+          secret:
+            secretName: {{ include "gitlab-agent.observabilitySecretName" . }}
+        {{- end }}
+        - name: config-volume
+          configMap:
+            name: {{ include "gitlab-agent.fullname" . }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.hostAliases  }}
+      hostAliases:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

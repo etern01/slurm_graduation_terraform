@@ -1,0 +1,51 @@
+include:
+  - template: Workflows/MergeRequest-Pipelines.gitlab-ci.yml
+
+stages:
+  - test
+  - publish
+
+variables:
+  HELM_INSTALL_IMAGE: registry.gitlab.com/gitlab-org/cluster-integration/helm-install-image:helm-3.10.2-kube-1.24.8-alpine-3.15
+
+lint:helm:
+  image: $HELM_INSTALL_IMAGE
+  script:
+    - helm lint
+
+publish:
+  stage: publish
+  script:
+  - curl --request POST
+         --form "token=${CHARTS_TRIGGER_TOKEN}"
+         --form ref=master
+         --form "variables[CHART_NAME]=${CI_PROJECT_NAME}"
+         --form "variables[RELEASE_REF]=${CI_COMMIT_REF_NAME}"
+         https://gitlab.com/api/v4/projects/2860651/trigger/pipeline
+  rules:
+  - if: '$CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+(-rc[0-9]+)?$/ && $CI_PROJECT_URL == "https://gitlab.com/gitlab-org/charts/gitlab-agent"'
+  - if: '$CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+(-rc[0-9]+)?$/ && $CI_PROJECT_URL == "https://gitlab.com/gitlab-org/security/charts/gitlab-agent"'
+
+test:install:
+  extends: .k3s
+  script:
+    - helm install gitlab-agent . --wait --set config.kasAddress='wss://kas.gitlab.test' --set config.token='FAKE-AGENT-TOKEN'
+
+test:upgrade:
+  extends: .k3s
+  script:
+    - helm install gitlab-agent . --wait --set config.kasAddress='wss://kas.gitlab.test' --set config.token='FAKE-AGENT-TOKEN'
+    - helm upgrade gitlab-agent . --wait --reuse-values
+
+.k3s:
+  stage: test
+  image: $HELM_INSTALL_IMAGE
+  services:
+    - name: registry.gitlab.com/gitlab-org/cluster-integration/test-utils/k3s-gitlab-ci/releases/v1.25.0-k3s1
+      alias: k3s
+  before_script:
+    - apk add curl
+    - curl -f k3s:8081 > k3s.yaml
+    - export KUBECONFIG=$(pwd)/k3s.yaml
+    - kubectl version
+    - kubectl cluster-info

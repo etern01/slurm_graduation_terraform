@@ -1,0 +1,36 @@
+additionalLabels: {}
+affinity: {}
+config:
+  kasAddress: wss://kas.gitlab.com
+  observability:
+    tls:
+      enabled: false
+      secret: {}
+  token: ""
+extraEnv: []
+fullnameOverride: ""
+gitlabDomain: ""
+hostAliases: []
+image:
+  pullPolicy: IfNotPresent
+  repository: cr.yandex/yc-marketplace/yandex-cloud/gitlab-org/gitlab-agent/agentk
+  tag: v15.8.0
+imagePullSecrets: []
+nameOverride: ""
+nodeSelector: {}
+podAnnotations:
+  prometheus.io/path: /metrics
+  prometheus.io/port: "8080"
+  prometheus.io/scrape: "true"
+podLabels: {}
+podSecurityContext: {}
+priorityClassName: ""
+rbac:
+  create: true
+replicas: 1
+resources: {}
+securityContext: {}
+serviceAccount:
+  annotations: {}
+  create: true
+tolerations: []
