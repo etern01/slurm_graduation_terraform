@@ -30,6 +30,7 @@ data "yandex_client_config" "client" {}
 
 data "yandex_kubernetes_cluster" "kubernetes" {
   name = module.kube.cluster_name
+  depends_on = [module.kube]
 }
 
 provider "kubernetes" {
@@ -37,6 +38,7 @@ provider "kubernetes" {
   host                   = module.kube.external_v4_endpoint
   cluster_ca_certificate = module.kube.cluster_ca_certificate
   token                  = data.yandex_client_config.client.iam_token
+  depends_on = [module.kube]
 }
 
 
