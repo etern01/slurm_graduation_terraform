@@ -18,8 +18,13 @@ resource "helm_release" "ingress_nginx" {
   version    = "4.7.1" 
   wait       = true
   set {
-    name  = "controller.nodeSelector"
-    value = "nginx-ingress: true"
+    name  = "controller.nodeSelector.kubernetes\\.io/os" 
+    value = "linux"
+  }
+
+  set {
+    name  = "controller.nodeSelector.role"
+    value = "ingress"
 
   }
   depends_on = [ yandex_resourcemanager_folder_iam_member.sa-k8s-admin-permissions ]

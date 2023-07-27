@@ -34,7 +34,7 @@ data "yandex_kubernetes_cluster" "kubernetes" {
 
 provider "kubernetes" {
 
-  host                   = module.kube.external_v4_address
+  host                   = module.kube.external_v4_endpoint
   cluster_ca_certificate = module.kube.cluster_ca_certificate
   token                  = data.yandex_client_config.client.iam_token
 }

@@ -33,7 +33,7 @@ module "kube" {
       }]
       node_labels   = {
         role        = "worker-01"
-        environment = "testing"
+        environment = "production"
       }
       nat = true
     },
@@ -51,8 +51,8 @@ module "kube" {
       }]
       node_labels   = {
         role        = "ingress"
-        environment = "testing"
-        nginx-ingress = true
+        environment = "production"
+        nginx-ingress = "true"
       }
       nat = true
     }
