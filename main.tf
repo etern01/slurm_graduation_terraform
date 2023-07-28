@@ -19,10 +19,10 @@ module "kube" {
   ]
 
   node_groups = {
-    "yc-k8s-ng-01" = {
+    "k8s-worke-01" = {
       description  = "Kubernetes nodes group 01"
       node_cores    = 2
-      node_memory   = 2
+      node_memory   = 4
       core_fraction = 50
       fixed_scale   = {
         size = 3
@@ -32,12 +32,12 @@ module "kube" {
         zone      = subnet.zone
       }]
       node_labels   = {
-        role        = "worker-01"
+        role        = "worker"
         environment = "production"
       }
       nat = true
     },
-    "yc-k8s-ingress" = {
+    "k8s-ingress" = {
       description  = "Kubernetes nodes ingress"
       node_cores    = 2
       node_memory   = 2
