@@ -25,3 +25,5 @@ master_labels = {
 
 dns_domain = "s015605.site"
 
+pg_user = "yelbduser"
+pg_password = "yelbduser"

@@ -28,8 +28,8 @@ resource "yandex_mdb_postgresql_cluster" "this" {
 
 resource "yandex_mdb_postgresql_user" "prod" {
   cluster_id = yandex_mdb_postgresql_cluster.this.id
-  name       = "yelbduser"
-  password   = "yelbduser"
+  name       = var.pg_user
+  password   = var.pg_password
 }
 
 resource "yandex_mdb_postgresql_user" "dev" {
@@ -40,8 +40,8 @@ resource "yandex_mdb_postgresql_user" "dev" {
 
 resource "yandex_mdb_postgresql_database" "yelbdatabase" {
   cluster_id = yandex_mdb_postgresql_cluster.this.id
-  name       = "yelbdatabase"
-  owner      = "yelbduser"
+  name       = var.pg_dbname
+  owner      = var.pg_user
   depends_on = [ yandex_mdb_postgresql_user.prod ]
 }
 

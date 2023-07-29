@@ -33,3 +33,22 @@ variable "dns_domain" {
   description = "Domain name"
 
 }
+
+variable "pg_user" {
+  type        = string
+  description = "Postgress user"
+
+}
+
+
+variable "pg_password" {
+  type        = string
+  description = "Postgres password"
+
+}
+
+
+variable "pg_dbname" {
+  type        = string
+  description = "pg database name"
+}
